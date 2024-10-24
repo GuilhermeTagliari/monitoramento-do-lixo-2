@@ -1,3 +1,4 @@
+/* Estilos gerais */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,128 +6,300 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Roboto', sans-serif;
+  background-color: #121212; /* Fundo escuro */
+  color: #e0e0e0; /* Texto claro */
+  transition: background-color 0.3s, color 0.3s; /* Transição suave */
 }
 
-/* Estilo da tela de login */
-.page {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
-  text-align: center;
-  margin: 100px auto; /* Centraliza horizontalmente e coloca um espaço em cima */
-}
-
-/* Estilo do painel de controle */
-.painel-container {
-  display: none; /* Oculta inicialmente */
-  height: 100vh; /* Altura total da tela */
-}
-
-header {
-  display: flex;
-  justify-content: space-between; /* Coloca o título e o botão de sair nas extremidades */
-  align-items: center;
-  padding: 10px 20px; /* Padding lateral */
-  background-color: #007bff; /* Cor de fundo do header */
-  color: white;
+h1, h2 {
+  color: #ffffff; /* Texto branco para títulos */
+  margin-bottom: 10px;
 }
 
 h1 {
-  margin-bottom: 10px;
-  color: #333;
+  font-size: 2rem; /* Tamanho maior para h1 */
 }
 
 h2 {
+  font-size: 1.5rem; /* Tamanho maior para h2 */
   margin-top: 20px;
-  margin-bottom: 15px;
-  color: #444;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-  text-align: left;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="submit"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-input[type="submit"] {
-  background-color: #28a745;
-  color: white;
-  cursor: pointer;
-  border: none;
-}
-
-input[type="submit"]:hover {
-  background-color: #218838;
-}
-
+/* Estilos do dashboard */
 .dashboard {
   display: flex;
-  height: calc(100vh - 40px); /* Ajusta a altura */
+  min-height: 100vh;
+  background-color: #121212; /* Fundo escuro */
 }
 
 .sidebar {
-  width: 200px; /* Largura do menu lateral */
-  background-color: #007bff; /* Cor de fundo do menu */
-  color: white;
+  width: 220px;
+  background-color: #1e1e1e; /* Fundo da sidebar */
+  color: #ffffff;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid #2c2c2c; /* Borda da sidebar */
 }
 
 .sidebar button {
-  background: none;
-  color: white;
+  background-color: transparent;
+  color: #ffffff;
   border: none;
   text-align: left;
-  padding: 10px;
+  padding: 12px;
   width: 100%;
   cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .sidebar button:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.content {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto; /* Permite rolagem se o conteúdo for muito longo */
+.sidebar button:focus {
+  outline: none;
+  background-color: #007bff;
 }
 
+.sidebar button.active {
+  background-color: #007bff; /* Azul forte para botão ativo */
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Área de Conteúdo */
+.content {
+  flex-grow: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-color: #181818; /* Fundo da área de conteúdo */
+  border-radius: 15px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5); /* Sombras mais intensas */
+  margin: 20px;
+}
+
+/* Estilo da tabela */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5); /* Sombras na tabela */
 }
 
 th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #2c2c2c; /* Bordas sutis */
+  padding: 12px;
   text-align: center;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: #007bff; /* Azul para cabeçalho */
+  color: white;
 }
 
+td {
+  background-color: #282828; /* Fundo das células */
+}
+
+td.green {
+  background-color: #4caf50; /* Verde futurista */
+  color: #ffffff;
+}
+
+td.yellow {
+  background-color: #ffc107; /* Amarelo vibrante */
+  color: #333333;
+}
+
+td.orange {
+  background-color: #ff9800; /* Laranja vibrante */
+  color: #ffffff;
+}
+
+td.dark-red {
+  background-color: #f44336; /* Vermelho escuro */
+  color: #ffffff;
+}
+
+/* Estilos de alerta */
 .alert {
-  background-color: #ffcccc; /* Cor de fundo para alertas */
   font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 5px 0;
+  background-color: #f8d7da; /* Fundo claro para alertas */
+  color: #721c24;
 }
 
+/* Estilos do gráfico */
 canvas {
-  width: 90% !important; /* Garante que o canvas ocupe 100% da largura */
-  height: 10px; /* Altura fixa para o gráfico */
+  width: 100% !important;
+  max-height: 300px; /* Limita a altura do gráfico */
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5); /* Sombras no gráfico */
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #1e1e1e; /* Fundo escuro para header */
+  color: white;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+header h1 {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+header button {
+  background-color: #007bff; /* Azul para botão de logout */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+header button:hover {
+  background-color: #0056b3; /* Azul escuro ao passar o mouse */
+}
+
+/* Estilos para a tela de login */
+#login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #121212; /* Fundo escuro */
+}
+
+.formLogin {
+  background-color: #1e1e1e; /* Fundo do formulário */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 123, 255, 0.7); /* Sombra e brilho ao redor do formulário */
+  display: flex; /* Para flexionar os itens internos */
+  flex-direction: column; /* Itens alinhados verticalmente */
+}
+
+.formLogin h1 {
+  color: #ffffff; /* Texto branco para o título */
+  margin-bottom: 20px; /* Espaçamento inferior */
+  text-align: center; /* Centraliza o título */
+}
+
+.formLogin input {
+  margin-bottom: 15px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  background-color: #282828; /* Cor de fundo dos campos de entrada */
+  color: #ffffff; /* Cor do texto */
+}
+
+.formLogin button {
+  background-color: #007bff; /* Azul para botão */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+}
+
+.formLogin button:hover {
+  background-color: #0056b3; /* Azul mais escuro quando o mouse está sobre o botão */
+}
+
+/* Tooltip e Ícone de Informação */
+.info-icon {
+  cursor: pointer; /* Muda o cursor ao passar o mouse sobre o ícone */
+  margin-left: 5px; /* Espaçamento à esquerda do ícone */
+  color: #ffffff; /* Cor do ícone */
+}
+
+.tooltip {
+  position: relative; /* Posiciona o contêiner da tooltip */
+  display: inline-block; /* Permite que a tooltip apareça ao lado do ícone */
+}
+
+.tooltiptext {
+  visibility: hidden; /* Oculta a tooltip por padrão */
+  width: 200px; /* Largura da tooltip */
+  background-color: #1e1e1e; /* Fundo da tooltip */
+  color: #ffffff; /* Texto da tooltip */
+  text-align: left; /* Alinha o texto à esquerda */
+  border-radius: 5px; /* Bordas arredondadas */
+  padding: 10px; /* Espaçamento interno */
+  position: absolute; /* Posiciona a tooltip em relação ao ícone */
+  z-index: 1; /* Fica acima dos outros elementos */
+  bottom: 125%; /* Coloca acima do ícone */
+  left: 50%; /* Centraliza horizontalmente em relação ao ícone */
+  margin-left: -100px; /* Ajusta a posição da tooltip */
+  opacity: 0; /* Torna a tooltip invisível */
+  transition: opacity 0.3s; /* Transição suave para a opacidade */
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible; /* Exibe a tooltip ao passar o mouse */
+  opacity: 1; /* Torna a tooltip visível */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .content {
+    padding: 15px;
+    margin: 10px;
+  }
+
+  table {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  header h1 {
+    margin: 10px 0;
+  }
+
+  header button {
+    margin-top: 10px;
+  }
 }
