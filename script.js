@@ -3,14 +3,27 @@ const usuarios = {
     'guilherme': '1234',
 };
 
+// Inicializa o mapa
+let map;
+let directionsService;
+let directionsRenderer;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -23.550520, lng: -46.633308 }, // Centro em São Paulo
+        zoom: 12,
+    });
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsRenderer.setMap(map); // Define o mapa onde as direções serão exibidas
+}
+
 // Verifica se o usuário já está logado ao carregar a página
 document.addEventListener('DOMContentLoaded', function() {
     if (localStorage.getItem('usuarioLogado')) {
-        // Se o usuário já estiver logado, mostra o painel e oculta a tela de login
         document.getElementById('login-page').style.display = 'none';
         document.getElementById('painel-container').style.display = 'block';
 
-        // Verifica qual aba estava ativa antes da atualização e restaura
         const abaAtiva = localStorage.getItem('abaAtiva');
         if (abaAtiva) {
             if (abaAtiva === 'monitoramento') {
@@ -21,11 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 mostrarAlertas();
             }
         } else {
-            // Se não houver aba ativa armazenada, mostra a aba padrão (Monitoramento)
             mostrarMonitoramento();
         }
     } else {
-        // Caso contrário, mostra a tela de login
         document.getElementById('login-page').style.display = 'flex';
         document.getElementById('painel-container').style.display = 'none';
     }
@@ -33,25 +44,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Função de Login
 document.querySelector('.formLogin').addEventListener('submit', function(event) {
-    event.preventDefault();  // Previne o envio padrão do formulário
+    event.preventDefault();
 
     const username = document.querySelector('input[name="usuario"]').value;
     const password = document.querySelector('input[name="password"]').value;
 
     if (usuarios[username] && usuarios[username] === password) {
-        // Armazena o estado de login no localStorage
         localStorage.setItem('usuarioLogado', username);
-
-        // Oculta o formulário de login
         document.getElementById('login-page').style.display = 'none';
-
-        // Mostra o painel após login
         document.getElementById('painel-container').style.display = 'block';
-
-        // Mostra a aba padrão (Monitoramento) ao logar
         mostrarMonitoramento();
     } else {
-        // Exibe uma mensagem de erro caso o login falhe
         alert('Usuário ou senha incorretos.');
     }
 });
@@ -61,21 +64,21 @@ function mostrarMonitoramento() {
     esconderTodos();
     document.getElementById('monitoramento').style.display = 'block';
     carregarCSV();
-    localStorage.setItem('abaAtiva', 'monitoramento');  // Armazena qual aba está ativa
+    localStorage.setItem('abaAtiva', 'monitoramento');
 }
 
 function mostrarGrafico() {
     esconderTodos();
     document.getElementById('grafico').style.display = 'block';
-    desenharGrafico();  // Atualiza o gráfico quando a aba for mostrada
-    localStorage.setItem('abaAtiva', 'grafico');  // Armazena qual aba está ativa
+    carregarCSVParaGrafico(); // Carrega os dados do CSV para o gráfico
+    localStorage.setItem('abaAtiva', 'grafico');
 }
 
 function mostrarAlertas() {
     esconderTodos();
     document.getElementById('alertas').style.display = 'block';
-    carregarAlertas();  // Atualiza os alertas quando a aba for mostrada
-    localStorage.setItem('abaAtiva', 'alertas');  // Armazena qual aba está ativa
+    carregarAlertas();
+    localStorage.setItem('abaAtiva', 'alertas');
 }
 
 function esconderTodos() {
@@ -89,9 +92,9 @@ function carregarCSV() {
     fetch('medicoes_lixeira.csv')
         .then(response => response.text())
         .then(data => {
-            const linhas = data.split('\n').slice(1); 
+            const linhas = data.split('\n').slice(1);
             const tabela = document.getElementById('tabela-dados').getElementsByTagName('tbody')[0];
-            tabela.innerHTML = ''; 
+            tabela.innerHTML = '';
 
             linhas.forEach(linha => {
                 const colunas = linha.split(',');
@@ -102,7 +105,7 @@ function carregarCSV() {
                         novaColuna.textContent = coluna.trim();
 
                         // Verifica o percentual e aplica a classe de cor
-                        if (index === 3) { // Coluna de Percentual Preenchido (%)
+                        if (index === 3) {
                             const percentual = parseFloat(colunas[3].trim());
                             if (percentual < 50) {
                                 novaColuna.classList.add('green');
@@ -121,8 +124,29 @@ function carregarCSV() {
         .catch(error => console.error('Erro ao carregar CSV:', error));
 }
 
+// Função para carregar os dados do CSV e exibir no gráfico
+function carregarCSVParaGrafico() {
+    fetch('medicoes_lixeira.csv')
+        .then(response => response.text())
+        .then(data => {
+            const linhas = data.split('\n').slice(1);
+            const labels = [];
+            const dadosPercentuais = [];
 
-// Função para desenhar o gráfico
+            linhas.forEach(linha => {
+                const colunas = linha.split(',');
+                if (colunas.length > 1) {
+                    labels.push(colunas[1].trim()); // Nome da lixeira
+                    dadosPercentuais.push(parseFloat(colunas[3].trim())); // Percentual
+                }
+            });
+
+            desenharGrafico(labels, dadosPercentuais);
+        })
+        .catch(error => console.error('Erro ao carregar CSV para gráfico:', error));
+}
+
+// Função para desenhar gráfico
 function desenharGrafico() {
     fetch('medicoes_lixeira.csv')
         .then(response => response.text())
@@ -179,52 +203,63 @@ function desenharGrafico() {
         .catch(error => console.error('Erro ao carregar CSV para gráfico:', error));
 }
 
-// Função para carregar os alertas
+// Função para carregar alertas e rotas
 function carregarAlertas() {
     fetch('medicoes_lixeira.csv')
         .then(response => response.text())
         .then(data => {
             const linhas = data.split('\n').slice(1);
-            const listaAlertas = document.getElementById('alertas-lista');
-            listaAlertas.innerHTML = ''; // Limpa a lista de alertas
+            const alertasLista = document.getElementById('alertas-lista');
+            alertasLista.innerHTML = ''; // Limpa a lista de alertas
+            const lixeirasCheias = []; // Para armazenar as lixeiras cheias
 
             linhas.forEach(linha => {
                 const colunas = linha.split(',');
-                if (colunas.length > 1 && parseFloat(colunas[3].trim()) >= 90) {
-                    const item = document.createElement('li');
-                    item.textContent = `Lixeira em ${colunas[0]} está ${colunas[3]}% cheia.`;
-                    listaAlertas.appendChild(item);
+                if (colunas.length > 1 && parseFloat(colunas[3].trim()) >= 90) { // Considera lixeiras cheias
+                    const alertaItem = document.createElement('li');
+                    alertaItem.textContent = `Lixeira cheia em: ${colunas[1]}, Percentual: ${colunas[3]}%`;
+                    alertasLista.appendChild(alertaItem);
+
+                    // Adiciona a localização da lixeira cheia para traçar rotas
+                    const latLng = { lat: parseFloat(colunas[4].trim()), lng: parseFloat(colunas[5].trim()) };
+                    lixeirasCheias.push(latLng);
                 }
             });
+
+            // Se houver lixeiras cheias, traça as rotas
+            if (lixeirasCheias.length > 0) {
+                traceRoute(lixeirasCheias);
+            }
         })
         .catch(error => console.error('Erro ao carregar CSV para alertas:', error));
 }
 
-// Função de logout
-function logout() {
-    // Remove o estado de login do localStorage
-    localStorage.removeItem('usuarioLogado');
-    localStorage.removeItem('abaAtiva'); // Remove também a aba ativa
+// Função para traçar as rotas das lixeiras cheias
+function traceRoute(lixeirasCheias) {
+    const waypoints = lixeirasCheias.map(location => ({
+        location: location,
+        stopover: true,
+    }));
 
-    // Oculta o painel de controle e mostra a tela de login novamente
-    document.getElementById('painel-container').style.display = 'none';
-    document.getElementById('login-page').style.display = 'flex'; // Exibe a tela de login
-    
-    // Limpa os campos de login
-    document.querySelector('input[name="usuario"]').value = '';
-    document.querySelector('input[name="password"]').value = '';
+    const request = {
+        origin: { lat: -23.550520, lng: -46.633308 }, // Ponto de partida (ajuste conforme necessário)
+        destination: { lat: -23.550520, lng: -46.633308 }, // Ponto de destino (ajuste conforme necessário)
+        waypoints: waypoints,
+        travelMode: google.maps.TravelMode.DRIVING,
+    };
+
+    directionsService.route(request, (result, status) => {
+        if (status === 'OK') {
+            directionsRenderer.setDirections(result);
+        } else {
+            console.error('Erro ao traçar rota:', status);
+        }
+    });
 }
 
-// Atualiza os dados a cada 10 segundos, mas mantém a aba ativa
-setInterval(function() {
-    if (localStorage.getItem('usuarioLogado')) {
-        const abaAtiva = localStorage.getItem('abaAtiva');
-        if (abaAtiva === 'monitoramento') {
-            carregarCSV(); // Atualiza apenas os dados do monitoramento
-        } else if (abaAtiva === 'grafico') {
-            desenharGrafico(); // Atualiza apenas os dados do gráfico
-        } else if (abaAtiva === 'alertas') {
-            carregarAlertas(); // Atualiza apenas os alertas
-        }
-    }
-}, 10000);
+// Função de Logout
+function logout() {
+    localStorage.removeItem('usuarioLogado');
+    document.getElementById('login-page').style.display = 'flex';
+    document.getElementById('painel-container').style.display = 'none';
+}

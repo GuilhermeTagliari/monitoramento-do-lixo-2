@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Monitoramento de Lixeiras</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Adicionei a biblioteca do Chart.js -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
 </head>
 <body>
     <!-- Tela de Login -->
@@ -19,60 +21,60 @@
         </form>
     </div>
 
-<!-- Painel de Controle -->
-<div id="painel-container" class="painel-container" style="display: none;">
-    <header>
-        <h1>Sistema de Monitoramento de Lixeiras</h1>
-        <button onclick="logout()">Sair</button>
-    </header>
-    <div class="dashboard">
-        <nav class="sidebar">
-            <button onclick="mostrarMonitoramento()">Monitoramento em Tempo Real</button>
-            <button onclick="mostrarGrafico()">Gráfico de Preenchimento</button>
-            <button onclick="mostrarAlertas()">Alertas de Lixeiras</button>
-        </nav>
-        <main class="content">
-            <!-- Monitoramento em Tempo Real -->
-            <div id="monitoramento" class="monitoramento" style="display: none;">
-                <h2>Monitoramento em Tempo Real</h2>
-                <table id="tabela-dados">
-                    <thead>
-                        <tr>
-                            <th>Data e Hora</th>
-                            <th>Distância (cm)</th>
-                            <th>Volume (cm³)</th>
-                            <th>
-                                Percentual Preenchido (%) 
-                                <div class="tooltip">
-                                    <i class="fas fa-info-circle info-icon"></i>
-                                    <span class="tooltiptext">
-                                        <p><span class="color-indicator green"></span> Abaixo de 50% - <strong>Verde</strong></p>
-                                        <p><span class="color-indicator yellow"></span> Abaixo de 75% - <strong>Amarelo</strong></p>
-                                        <p><span class="color-indicator orange"></span> 75% a 85% - <strong>Laranja</strong></p>
-                                        <p><span class="color-indicator dark-red"></span> 85% a 100% - <strong>Vermelho</strong></p>
-                                    </span>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </main>
-    </div>
-</div>
-
+    <!-- Painel de Controle -->
+    <div id="painel-container" class="painel-container" style="display: none;">
+        <header>
+            <img src="/imagens/lixo.png" alt="Lixo" class="img-redonda">
+            <h1>Sistema de Monitoramento de Lixeiras</h1>
+            <button onclick="logout()">Sair</button>
+        </header>
+        <div class="dashboard">
+            <nav class="sidebar">
+                <button onclick="mostrarMonitoramento()">Monitoramento em Tempo Real</button>
+                <button onclick="mostrarGrafico()">Gráfico de Preenchimento</button>
+                <button onclick="mostrarAlertas()">Rotas</button>
+            </nav>
+            <main class="content">
+                <!-- Monitoramento em Tempo Real -->
+                <div id="monitoramento" class="monitoramento" style="display: none;">
+                    <h2>Monitoramento em Tempo Real</h2>
+                    <table id="tabela-dados">
+                        <thead>
+                            <tr>
+                                <th>Data e Hora</th>
+                                <th>Distância (cm)</th>
+                                <th>Volume (cm³)</th>
+                                <th>
+                                    Percentual Preenchido (%) 
+                                    <div class="tooltip">
+                                        <i class="fas fa-info-circle info-icon"></i>
+                                        <span class="tooltiptext">
+                                            <p><span class="color-indicator green"></span> Abaixo de 50% - <strong>Verde</strong></p>
+                                            <p><span class="color-indicator yellow"></span> Abaixo de 75% - <strong>Amarelo</strong></p>
+                                            <p><span class="color-indicator orange"></span> 75% a 85% - <strong>Laranja</strong></p>
+                                            <p><span class="color-indicator dark-red"></span> 85% a 100% - <strong>Vermelho</strong></p>
+                                        </span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
 
                 <!-- Gráfico de Preenchimento -->
-                <div id="grafico" class="grafico" style="display: none;">
+                <div id="grafico" style="display: none;">
                     <h2>Gráfico de Preenchimento</h2>
                     <canvas id="graficoLixeira"></canvas>
                 </div>
 
                 <!-- Alertas de Lixeiras -->
                 <div id="alertas" class="alertas" style="display: none;">
-                    <h2>Alertas de Lixeiras</h2>
+                    <h2>Veja as melhores rotas de coleta</h2>
                     <ul id="alertas-lista"></ul>
+                    <iframe
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBfannthnUiXbnV9P6faWnmgWhpjD3k29c&zoom=15&q=R. Morom, 1280 - Centro, Passo Fundo - RS, 99010-031"
+                    frameborder="0" allowfullscreen="" style="width: 100%; height: 400px; border: none;"></iframe>
                 </div>
             </main>
         </div>
