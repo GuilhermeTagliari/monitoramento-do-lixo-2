@@ -7,26 +7,13 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-
 </head>
 <body>
-    <!-- Tela de Login -->
-    <div id="login-page">
-        <form class="formLogin">
-            <h1>Login</h1>
-            <input type="text" name="usuario" placeholder="Usuário" required>
-            <input type="password" name="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
-        </form>
-    </div>
-
     <!-- Painel de Controle -->
-    <div id="painel-container" class="painel-container" style="display: none;">
+    <div id="painel-container" class="painel-container">
         <header>
-            <img src="/imagens/lixo.png" alt="Lixo" class="img-redonda">
+            <img src="imagens/lixo.png" alt="Lixo" class="img-redonda">
             <h1>Sistema de Monitoramento de Lixeiras</h1>
-            <button onclick="logout()">Sair</button>
         </header>
         <div class="dashboard">
             <nav class="sidebar">
@@ -44,42 +31,26 @@
                                 <th>Data e Hora</th>
                                 <th>Distância (cm)</th>
                                 <th>Volume (cm³)</th>
-                                <th>
-                                    Percentual Preenchido (%) 
-                                    <div class="tooltip">
-                                        <i class="fas fa-info-circle info-icon"></i>
-                                        <span class="tooltiptext">
-                                            <p><span class="color-indicator green"></span> Abaixo de 50% - <strong>Verde</strong></p>
-                                            <p><span class="color-indicator yellow"></span> Abaixo de 75% - <strong>Amarelo</strong></p>
-                                            <p><span class="color-indicator orange"></span> 75% a 85% - <strong>Laranja</strong></p>
-                                            <p><span class="color-indicator dark-red"></span> 85% a 100% - <strong>Vermelho</strong></p>
-                                        </span>
-                                    </div>
-                                </th>
+                                <th>Percentual Preenchido (%)</th>
+                                <th>Status da Tampa</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
-
-                <!-- Gráfico de Preenchimento -->
+                
                 <div id="grafico" style="display: none;">
-                    <h2>Gráfico de Preenchimento</h2>
                     <canvas id="graficoLixeira"></canvas>
                 </div>
-
-                <!-- Alertas de Lixeiras -->
-                <div id="alertas" class="alertas" style="display: none;">
+                
+                <div id="alertas" style="display: none;">
                     <h2>Veja as melhores rotas de coleta</h2>
-                    <ul id="alertas-lista"></ul>
-                    <iframe
-                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBfannthnUiXbnV9P6faWnmgWhpjD3k29c&zoom=15&q=R. Morom, 1280 - Centro, Passo Fundo - RS, 99010-031"
-                    frameborder="0" allowfullscreen="" style="width: 100%; height: 400px; border: none;"></iframe>
-                </div>
+                    <div id="map" style="width: 100%; height: 400px; display: none;"></div>
+                </div>  
             </main>
         </div>
     </div>
-
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfannthnUiXbnV9P6faWnmgWhpjD3k29c&callback=initMap"></script>
     <script src="script.js"></script>
 </body>
 </html>
