@@ -68,7 +68,7 @@ O **Eco Monitor** é uma solução inteligente desenvolvida para monitorar o ní
 ### **Passos**:  
 1. Clone o repositório:  
    ```bash
-   git clone <link_do_repositorio>
+   git clone https://github.com/GuilhermeTagliari/monitoramento-do-lixo-2
    cd <pasta_do_repositorio>
    ```  
 2. Ative o ambiente virtual Python:  
